@@ -12,6 +12,8 @@
 		094BD4E61FE9B174005A6C7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 094BD4E41FE9B174005A6C7E /* Main.storyboard */; };
 		094BD4E81FE9B174005A6C7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 094BD4E71FE9B174005A6C7E /* Assets.xcassets */; };
 		094BD4EB1FE9B174005A6C7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 094BD4E91FE9B174005A6C7E /* LaunchScreen.storyboard */; };
+		094BD4F31FE9B641005A6C7E /* SetGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BD4F21FE9B641005A6C7E /* SetGameModel.swift */; };
+		094BD4F51FE9B6E0005A6C7E /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BD4F41FE9B6E0005A6C7E /* Card.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		094BD4E71FE9B174005A6C7E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		094BD4EA1FE9B174005A6C7E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		094BD4EC1FE9B174005A6C7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		094BD4F21FE9B641005A6C7E /* SetGameModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetGameModel.swift; sourceTree = "<group>"; };
+		094BD4F41FE9B6E0005A6C7E /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,8 @@
 		094BD4DF1FE9B174005A6C7E /* Set Game */ = {
 			isa = PBXGroup;
 			children = (
+				094BD4F21FE9B641005A6C7E /* SetGameModel.swift */,
+				094BD4F41FE9B6E0005A6C7E /* Card.swift */,
 				094BD4E01FE9B174005A6C7E /* AppDelegate.swift */,
 				094BD4E21FE9B174005A6C7E /* ViewController.swift */,
 				094BD4E41FE9B174005A6C7E /* Main.storyboard */,
@@ -139,6 +145,8 @@
 			files = (
 				094BD4E31FE9B174005A6C7E /* ViewController.swift in Sources */,
 				094BD4E11FE9B174005A6C7E /* AppDelegate.swift in Sources */,
+				094BD4F31FE9B641005A6C7E /* SetGameModel.swift in Sources */,
+				094BD4F51FE9B6E0005A6C7E /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
