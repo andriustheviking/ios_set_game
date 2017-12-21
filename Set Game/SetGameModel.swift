@@ -10,10 +10,13 @@ import Foundation
 
 class SetGame {
     
-    var deck = [Card]()
     
-    init() {
-        
+    
+    var deck = [Card]()
+    var table = [Card]()
+    
+    init(startDeal: Int) {
+
         //initialize deck
         let cardNumbers = [Number.one, Number.two, Number.three]
         let cardSymbols = [SymbolType.A, SymbolType.B, SymbolType.C]
@@ -41,10 +44,17 @@ class SetGame {
             randomIndex = Int( arc4random_uniform( UInt32(randomRange)))
           
             tempCard = deck[randomIndex]
-            deck[randomIndex] = deck[ randomRange ]
-            deck[ randomRange ] = tempCard
+            deck[randomIndex] = deck[ randomRange - 1 ]
+            deck[ randomRange - 1] = tempCard
         }
         
+        //deal cards to table
+        for _ in 0..<startDeal {
+            if let card = deck.popLast() {
+                table.append(card)
+            }
+        }
+ 
     }
 
     
