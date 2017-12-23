@@ -9,13 +9,41 @@
 import Foundation
 
 class SetGame {
+
+    private var deck = [Card]()
+    
+    private var table = [(card: Card, selected: Bool)]()
+
+    var tableCount: Int {
+        get {
+            return table.count
+        }
+    }
+    
+    func getCard(at index: Int) -> Card? {
+        return index < table.count ? table[index].card : nil
+    }
+    
+    func isSelected(cardIndex: Int) -> Bool {
+        if cardIndex < table.count {
+            return table[cardIndex].selected
+        }
+        return false
+    }
+    
+    func selectCard(index: Int) {
+        if index < table.count {
+            if table.filter({ $0.selected }).count >= 3 {
+                for index in table.indices {
+                    table[index].selected = false
+                }
+            }
+            table[index].selected = true
+        }
+    }
     
     
-    
-    var deck = [Card]()
-    var table = [Card]()
-    
-    init(startDeal: Int) {
+    init(deal numCards: Int) {
 
         //initialize deck
         let cardNumbers = [Number.one, Number.two, Number.three]
@@ -49,17 +77,13 @@ class SetGame {
         }
         
         //deal cards to table
-        for _ in 0..<startDeal {
+        for _ in 0..<numCards {
             if let card = deck.popLast() {
-                table.append(card)
+                table.append( (card, false) )
             }
         }
- 
     }
-
     
-    func selectCard(_ card: Card){
-        
-    }
+    
 
 }

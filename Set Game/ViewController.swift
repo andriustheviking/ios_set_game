@@ -10,29 +10,54 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let startDeal = 12
     let gameSymbols = "▲●■"
     let gameColors = [#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)]
     
+    var maxCards = Int()
     
-    var game = SetGame(startDeal: 12)
-    
-    
-    @IBOutlet var buttons: [UIButton]!
-
-    
-    @IBAction func touchCard(_ sender: UIButton) {
-        selectCard(on: sender)
-    }
-
+//TODO: startDeal should be set based off buttons' background
+    var startDeal = 12
+//TODO: game should be off startDeal
+    var game = SetGame(deal: 12)
     
     
-    func selectCard(on button: UIButton){
-        let tableIndex = buttons.index(of: button)!
-        if (tableIndex < game.table.count)  {
-            drawCardFace(for: game.table[tableIndex] , on: button)
+    @IBOutlet var buttons: [UIButton]!{
+        
+        didSet {
+            maxCards = buttons.count
+            
+            for index in buttons.indices {
+                let button = buttons[index]
+                
+                button.layer.cornerRadius = 8.0
+                
+                if let card = game.getCard(at: index) {
+                    drawCardFace(for: card, on: button)
+                }
+//TODO: delete this when lazy game is fixed:
+                else {
+                    button.backgroundColor = nil
+                }
+            }
         }
     }
+    
+    
+    //highlights all selected cards
+    @IBAction func touchCard(_ sender: UIButton) {
+        game.selectCard(index: buttons.index(of: sender)!)
+        for i in buttons.indices {
+            if game.isSelected(cardIndex: i) {
+                buttons[i].layer.borderWidth = 3.0
+                buttons[i].layer.borderColor = UIColor.blue.cgColor
+            }
+            else {
+                buttons[i].layer.borderWidth = 0.0
+                buttons[i].layer.borderColor = UIColor.blue.cgColor
+            }
+        }
+    }
+
     
     
     
@@ -69,7 +94,7 @@ class ViewController: UIViewController {
             case .solid:
                 break
             case .striped:
-                fontAlpha = 0.15
+                fontAlpha = 0.40
             case .open:
                 fontAlpha = 0.0
                 strokeWidth = NSNumber(floatLiteral: 6.0)
