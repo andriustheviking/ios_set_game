@@ -45,9 +45,11 @@ class ViewController: UIViewController {
     
     //highlights all selected cards
     @IBAction func touchCard(_ sender: UIButton) {
+        
         game.selectCard(index: buttons.index(of: sender)!)
+        
         for i in buttons.indices {
-            if game.isSelected(cardIndex: i) {
+            if game.isSelected(at: i) {
                 buttons[i].layer.borderWidth = 3.0
                 buttons[i].layer.borderColor = UIColor.blue.cgColor
             }
@@ -63,6 +65,8 @@ class ViewController: UIViewController {
     
     private func drawCardFace(for card: Card, on button: UIButton){
         
+        var cardFaceString = String()
+        
         var symbolIndex = gameSymbols.startIndex
         
         //get the specific symbol of the face card
@@ -74,8 +78,6 @@ class ViewController: UIViewController {
             case .C:
                 symbolIndex = gameSymbols.index(symbolIndex, offsetBy: 2)
         }
-        
-        var cardFaceString = String()
         
         //add number of symbols to cardString
         for _ in 0 ..< card.number.rawValue {

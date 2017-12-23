@@ -12,7 +12,7 @@ class SetGame {
 
     private var deck = [Card]()
     
-    private var table = [(card: Card, selected: Bool)]()
+    private var table = [(card: Card, selected: Bool)?]()
 
     var tableCount: Int {
         get {
@@ -20,26 +20,36 @@ class SetGame {
         }
     }
     
-    func getCard(at index: Int) -> Card? {
-        return index < table.count ? table[index].card : nil
+    var numSelected: Int {
+        get {
+            return table.filter { $0?.selected ?? false }.count
+        }
     }
     
-    func isSelected(cardIndex: Int) -> Bool {
-        if cardIndex < table.count {
-            return table[cardIndex].selected
+    
+    func getCard(at index: Int) -> Card? {
+        return index < table.count ? table[index]?.card : nil
+    }
+    
+    
+    func isSelected(at index: Int) -> Bool {
+        if index < table.count, let position = table[index] {
+            return position.selected
         }
         return false
     }
     
+    
     func selectCard(index: Int) {
-        if index < table.count {
-            if table.filter({ $0.selected }).count >= 3 {
-                for index in table.indices {
-                    table[index].selected = false
-                }
+        
+        if numSelected == 3 {
+            for index in table.indices {
+                table[index]?.selected = false
             }
-            table[index].selected = true
         }
+
+        table[index]?.selected = true
+        
     }
     
     
