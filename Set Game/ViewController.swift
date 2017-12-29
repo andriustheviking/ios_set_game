@@ -18,27 +18,56 @@ class ViewController: UIViewController {
 //TODO: startDeal should be set based off buttons' background
     var startDeal = 12
 //TODO: game should be off startDeal
-    var game = SetGame(deal: 12)
-    
+    var game = SetGame(deal: 16, of: 24)
     
     @IBOutlet var buttons: [UIButton]!{
-        
         didSet {
             maxCards = buttons.count
+            drawGame()
+        }
+    }
+    
+    
+    @IBOutlet weak var drawCardButton: UIButton?
+    
+    
+    @IBAction func drawCards(_ sender: UIButton) {
+        game.drawThreeCards()
+        drawGame()
+    }
+    
+    
+    
+    func drawGame() {
+        
+        var enableDrawCard = false
+        
+        for i in buttons.indices {
+        
+            let button = buttons[i]
             
-            for index in buttons.indices {
-                let button = buttons[index]
+            button.layer.cornerRadius = 8.0
+            
+            if let card = game.getCard(at: i) {
                 
-                button.layer.cornerRadius = 8.0
+                drawCardFace(for: card, on: button)
                 
-                if let card = game.getCard(at: index) {
-                    drawCardFace(for: card, on: button)
+                if game.isSelected(at: i) {
+                    buttons[i].layer.borderWidth = 3.0
+                    buttons[i].layer.borderColor = UIColor.blue.cgColor
                 }
-//TODO: delete this when lazy game is fixed:
                 else {
-                    button.backgroundColor = nil
+                    buttons[i].layer.borderWidth = 0.0
+                    buttons[i].layer.borderColor = UIColor.blue.cgColor
                 }
+            
+            } else {
+                button.backgroundColor = nil
+                enableDrawCard = true
             }
+            
+            drawCardButton?.isEnabled = enableDrawCard
+            
         }
     }
     
@@ -47,17 +76,9 @@ class ViewController: UIViewController {
     @IBAction func touchCard(_ sender: UIButton) {
         
         game.selectCard(index: buttons.index(of: sender)!)
-        
-        for i in buttons.indices {
-            if game.isSelected(at: i) {
-                buttons[i].layer.borderWidth = 3.0
-                buttons[i].layer.borderColor = UIColor.blue.cgColor
-            }
-            else {
-                buttons[i].layer.borderWidth = 0.0
-                buttons[i].layer.borderColor = UIColor.blue.cgColor
-            }
-        }
+
+        drawGame()
+
     }
 
     

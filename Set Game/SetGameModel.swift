@@ -8,29 +8,45 @@
 
 import Foundation
 
-class SetGame {
+//func filter(_ isIncluded: (Self.Element) throws -> Bool) rethrows -> [Self.Element]
+//func reduce<Result>(_ initialResult: Result, _ nextPartialResult: (Result, Int)  -> Result)  -> Result
 
+
+extension Array  {
+    
+    func isValidSet (_ fn: (Element, Element) -> Bool ) -> Bool {
+       
+        var same = true
+        var diff = true
+        
+        for i in self.indices {
+            for j in self.indices {
+                if j != i {
+                    same = same && fn( self[i], self[j] )
+                    diff = diff && !fn( self[i], self[j] )
+                }
+            }
+        }
+        return same || diff
+    }
+}
+
+class SetGame {
+    
     private var deck = [Card]()
     
     private var table = [(card: Card, selected: Bool)?]()
-
-    var tableCount: Int {
-        get {
-            return table.count
-        }
-    }
     
-    var numSelected: Int {
-        get {
-            return table.filter { $0?.selected ?? false }.count
-        }
-    }
+    private var score = 0
+    
+    var playerScore: Int { get { return score }    }
+    
+    var tableCount: Int { get { return table.count }    }
     
     
     func getCard(at index: Int) -> Card? {
         return index < table.count ? table[index]?.card : nil
     }
-    
     
     func isSelected(at index: Int) -> Bool {
         if index < table.count, let position = table[index] {
@@ -38,22 +54,61 @@ class SetGame {
         }
         return false
     }
-    
+
     
     func selectCard(index: Int) {
         
-        if numSelected == 3 {
-            for index in table.indices {
-                table[index]?.selected = false
+        if let space = table[index] {
+            
+            table[index]?.selected = !space.selected
+            
+            let cards = table.filter({ $0?.selected ?? false}).map({$0!.card})
+
+            if cards.count == 3 {
+                
+                //check if valid set
+                let isValid = cards.isValidSet { $0.color == $1.color }  &&
+                    cards.isValidSet { $0.number == $1.number } &&
+                    cards.isValidSet { $0.shade == $1.shade } &&
+                    cards.isValidSet { $0.symbol == $1.symbol }
+
+                //remove cards from table and draw three more
+                if isValid {
+                    print("isValid")
+                    for i in table.indices {
+                        if let space = table[i] {
+                            if space.selected {
+                                table[i] = nil
+                            }
+                        }
+                    }
+                } else {
+                    print("Not Valid")
+                }
+                
+                for index in table.indices {
+                    table[index]?.selected = false
+                }
             }
         }
-
-        table[index]?.selected = true
-        
     }
     
     
-    init(deal numCards: Int) {
+    
+    func drawThreeCards() {
+        var numDraws = 0
+        var i = table.startIndex
+
+        while(i < table.endIndex && numDraws < 3) {
+            if table[i] == nil, let card = deck.popLast() {
+                table[i] = (card, false)
+                numDraws += 1
+            }
+            i = table.index(after: i)
+        }
+    }
+
+    init(deal numCards: Int, of max: Int) {
 
         //initialize deck
         let cardNumbers = [Number.one, Number.two, Number.three]
@@ -87,13 +142,13 @@ class SetGame {
         }
         
         //deal cards to table
-        for _ in 0..<numCards {
-            if let card = deck.popLast() {
+        for i in 0..<max {
+            if i < numCards, let card = deck.popLast() {
                 table.append( (card, false) )
+            }
+            else {
+                table.append(nil)
             }
         }
     }
-    
-    
-
 }
