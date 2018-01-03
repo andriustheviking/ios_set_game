@@ -8,8 +8,6 @@
 
 import Foundation
 
-//func filter(_ isIncluded: (Self.Element) throws -> Bool) rethrows -> [Self.Element]
-//func reduce<Result>(_ initialResult: Result, _ nextPartialResult: (Result, Int)  -> Result)  -> Result
 
 
 extension Array  {
@@ -31,11 +29,12 @@ extension Array  {
     }
 }
 
+
 class SetGame {
     
     private var deck = [Card]()
     
-    private var table = [(card: Card, selected: Bool)?]()
+    private var table = [ (card: Card, selected: Bool)? ]()
     
     private var score = 0
     
@@ -43,13 +42,12 @@ class SetGame {
     
     var tableCount: Int { get { return table.count }    }
     
-    
     func getCard(at index: Int) -> Card? {
         return index < table.count ? table[index]?.card : nil
     }
     
     func isSelected(at index: Int) -> Bool {
-        if index < table.count, let position = table[index] {
+        if let position = table[index] {
             return position.selected
         }
         return false
@@ -74,7 +72,6 @@ class SetGame {
 
                 //remove cards from table and draw three more
                 if isValid {
-                    print("isValid")
                     for i in table.indices {
                         if let space = table[i] {
                             if space.selected {
@@ -82,12 +79,13 @@ class SetGame {
                             }
                         }
                     }
+                    score += 1
                 } else {
-                    print("Not Valid")
+                    score -= 1
                 }
                 
-                for index in table.indices {
-                    table[index]?.selected = false
+                for i in table.indices {
+                        table[i]?.selected = false
                 }
             }
         }

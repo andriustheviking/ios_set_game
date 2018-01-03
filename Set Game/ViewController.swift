@@ -18,17 +18,18 @@ class ViewController: UIViewController {
 //TODO: startDeal should be set based off buttons' background
     var startDeal = 12
 //TODO: game should be off startDeal
-    var game = SetGame(deal: 16, of: 24)
-    
-    @IBOutlet var buttons: [UIButton]!{
+   var game = SetGame(deal: 16, of: 24){
         didSet {
             maxCards = buttons.count
             drawGame()
         }
     }
     
+    @IBOutlet var buttons: [UIButton]!
+    
     
     @IBOutlet weak var drawCardButton: UIButton?
+    @IBOutlet weak var scoreUI: UILabel!
     
     
     @IBAction func drawCards(_ sender: UIButton) {
@@ -46,7 +47,11 @@ class ViewController: UIViewController {
         
             let button = buttons[i]
             
+            //draw empty button
             button.layer.cornerRadius = 8.0
+            button.layer.borderWidth = 0.0
+            button.backgroundColor = nil
+            button.setAttributedTitle(nil, for: UIControlState.normal)
             
             if let card = game.getCard(at: i) {
                 
@@ -56,29 +61,21 @@ class ViewController: UIViewController {
                     buttons[i].layer.borderWidth = 3.0
                     buttons[i].layer.borderColor = UIColor.blue.cgColor
                 }
-                else {
-                    buttons[i].layer.borderWidth = 0.0
-                    buttons[i].layer.borderColor = UIColor.blue.cgColor
-                }
             
             } else {
-                button.backgroundColor = nil
                 enableDrawCard = true
             }
             
             drawCardButton?.isEnabled = enableDrawCard
-            
+            scoreUI.text = "Score: " + String(game.playerScore)
         }
     }
     
     
     //highlights all selected cards
     @IBAction func touchCard(_ sender: UIButton) {
-        
         game.selectCard(index: buttons.index(of: sender)!)
-
         drawGame()
-
     }
 
     
