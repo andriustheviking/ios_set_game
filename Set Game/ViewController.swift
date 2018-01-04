@@ -13,38 +13,47 @@ class ViewController: UIViewController {
     let gameSymbols = "▲●■"
     let gameColors = [#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)]
     
-    var maxCards = Int()
-    
-//TODO: startDeal should be set based off buttons' background
     var startDeal = 12
-//TODO: game should be off startDeal
-   var game = SetGame(deal: 16, of: 24){
-        didSet {
-            maxCards = buttons.count
-            drawGame()
+    
+    override func viewDidLoad() {
+        updateUI()
+    }
+
+    var game = SetGame(deal: 16, of: 24) {
+        didSet{
+            updateUI()
         }
     }
     
+    
     @IBOutlet var buttons: [UIButton]!
     
-    
-    @IBOutlet weak var drawCardButton: UIButton?
+    @IBOutlet weak var drawCardButton: UIButton!
     @IBOutlet weak var scoreUI: UILabel!
+    @IBOutlet weak var playBtn: UIButton!
     
+    @IBAction func playAgain(_ sender: UIButton) {
+        game = SetGame(deal: 16, of: buttons.count)
+    }
     
     @IBAction func drawCards(_ sender: UIButton) {
         game.drawThreeCards()
-        drawGame()
+        updateUI()
     }
     
+  
+    @IBAction func touchCard(_ sender: UIButton) {
+        game.selectCard(index: buttons.index(of: sender)!)
+        updateUI()
+    }
+
     
-    
-    func drawGame() {
+    func updateUI() {
         
         var enableDrawCard = false
         
         for i in buttons.indices {
-        
+            
             let button = buttons[i]
             
             //draw empty button
@@ -61,24 +70,15 @@ class ViewController: UIViewController {
                     buttons[i].layer.borderWidth = 3.0
                     buttons[i].layer.borderColor = UIColor.blue.cgColor
                 }
-            
+                
             } else {
                 enableDrawCard = true
             }
-            
-            drawCardButton?.isEnabled = enableDrawCard
-            scoreUI.text = "Score: " + String(game.playerScore)
         }
+        
+        drawCardButton.isEnabled = enableDrawCard
+        scoreUI.text = "Score: " + String(game.playerScore)
     }
-    
-    
-    //highlights all selected cards
-    @IBAction func touchCard(_ sender: UIButton) {
-        game.selectCard(index: buttons.index(of: sender)!)
-        drawGame()
-    }
-
-    
     
     
     private func drawCardFace(for card: Card, on button: UIButton){

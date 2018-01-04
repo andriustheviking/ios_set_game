@@ -42,6 +42,8 @@ class SetGame {
     
     var tableCount: Int { get { return table.count }    }
     
+    var isOver: Bool { get { return deck.isEmpty && table.isEmpty } }
+    
     func getCard(at index: Int) -> Card? {
         return index < table.count ? table[index]?.card : nil
     }
@@ -80,6 +82,7 @@ class SetGame {
                         }
                     }
                     score += 1
+                    drawThreeCards()
                 } else {
                     score -= 1
                 }
@@ -90,7 +93,6 @@ class SetGame {
             }
         }
     }
-    
     
     
     func drawThreeCards() {
@@ -106,6 +108,7 @@ class SetGame {
         }
     }
 
+    
     init(deal numCards: Int, of max: Int) {
 
         //initialize deck
