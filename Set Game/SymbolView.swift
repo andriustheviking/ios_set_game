@@ -15,49 +15,53 @@ import UIKit
  */
 @IBDesignable
 class SymbolView: UIView {
+    
     private struct sizes {
-        static let strokePercent = 0.02
+        static let strokePercent = 0.04
         static let numStripes = 16
-       
+        static let symbolAspectRatio = 1.55
     }
     
     @IBInspectable
-    var symbol = SymbolType.squiggle
+    var symbol = SymbolType.oval
     @IBInspectable
-    var shading = Shading.striped
+    var shading = Shading.open
     @IBInspectable
     var color = UIColor.blue
     
     
     override func draw(_ rect: CGRect) {
         
-        let stroke = bounds.height * CGFloat(sizes.strokePercent)
-        let offset = stroke
+        let width = min( bounds.width, bounds.height / CGFloat(sizes.symbolAspectRatio))
+        let height = width * CGFloat(sizes.symbolAspectRatio)
+        
+        let stroke = height * CGFloat(sizes.strokePercent)
+        let offset =  height / 28
         let path: UIBezierPath
         
         switch symbol {
             
         case .diamond:
             path = UIBezierPath()
-            path.move(to: CGPoint(x: bounds.midX, y: offset))
+            path.move(to: CGPoint(x: width / 2, y: offset))
             path.addLine(to: CGPoint(x: offset, y: bounds.midY ) )
-            path.addLine(to: CGPoint(x: bounds.midX, y: bounds.height - offset ) )
-            path.addLine(to: CGPoint(x: bounds.width - offset, y: bounds.midY ) )
+            path.addLine(to: CGPoint(x: width / 2, y: height - offset ) )
+            path.addLine(to: CGPoint(x: width - offset, y: bounds.midY ) )
             path.close()
         
         case .squiggle:
             //add curves to form squiggle shape
             path = UIBezierPath()
-            path.move(to: CGPoint(x: 3 * bounds.width / 8, y: 2 * offset) )
-            path.addCurve(to: CGPoint(x: bounds.width / 4, y: bounds.height / 6),
-                          controlPoint1: CGPoint(x: 3 * bounds.width / 8, y: 2 * offset),
-                          controlPoint2: CGPoint( x: 1 * bounds.width / 8, y: 1 * bounds.height / 18))
-            path.addCurve(to: CGPoint(x: 5 * bounds.width / 32, y: 13 * bounds.height / 16),
-                          controlPoint1: CGPoint(x: 9 * bounds.width / 16, y: 8 * bounds.height / 16),
-                          controlPoint2: CGPoint(x: 3 * -bounds.width / 32, y: 7 * bounds.height / 16))
-            path.addCurve(to: CGPoint(x: 5 * bounds.width / 8, y: bounds.height - 2 * offset),
-                          controlPoint1: CGPoint(x: 5 * bounds.width / 16, y: 16 * bounds.height / 16),
-                          controlPoint2: CGPoint(x: 10 * bounds.width / 16, y: bounds.height - 2 * offset))
+            path.move(to: CGPoint(x: 3 * width / 8, y: offset) )
+            path.addCurve(to: CGPoint(x: width / 4, y: height / 6),
+                          controlPoint1: CGPoint(x: 3 * width / 8, y: offset),
+                          controlPoint2: CGPoint( x: 1 * width / 8, y: 1 * height / 18))
+            path.addCurve(to: CGPoint(x: 5 * width / 32, y: 13 * height / 16),
+                          controlPoint1: CGPoint(x: 9 * width / 16, y: 8 * height / 16),
+                          controlPoint2: CGPoint(x: 3 * -width / 32, y: 7 * height / 16))
+            path.addCurve(to: CGPoint(x: 5 * width / 8, y: height - offset),
+                          controlPoint1: CGPoint(x: 5 * width / 16, y: 16 * height / 16),
+                          controlPoint2: CGPoint(x: 10 * width / 16, y: height - offset))
             //append path with mirrored duplicate
             let duplicatePath = UIBezierPath()
             duplicatePath.append(path)
@@ -68,12 +72,10 @@ class SymbolView: UIView {
             
         case .oval:
             let shapeRect = CGRect(origin: CGPoint(x: offset , y: offset),
-                                   size: CGSize(width: bounds.width - 2*offset,
-                                                height: bounds.height - 2*offset ) )
+                                   size: CGSize(width: width - 2*offset,
+                                                height: height - 2*offset ) )
             path = UIBezierPath(roundedRect: shapeRect, cornerRadius: shapeRect.width )
-
         }
-        
         
         
         switch shading
