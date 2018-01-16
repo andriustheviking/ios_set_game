@@ -113,7 +113,7 @@ class SetGame {
 
         //initialize deck
         let cardNumbers = [Number.one, Number.two, Number.three]
-        let cardSymbols = [SymbolType.A, SymbolType.B, SymbolType.C]
+        let cardSymbols = [SymbolType.diamond , SymbolType.oval, SymbolType.squiggle]
         let cardShades = [Shading.solid, Shading.open, Shading.striped]
         let cardColor = [Color.A, Color.B, Color.C]
         
