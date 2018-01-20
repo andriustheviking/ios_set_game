@@ -10,8 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let gameColors = [#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)]
-    
     var startDeal = 12
     
     override func viewDidLoad() {
@@ -27,21 +25,38 @@ class ViewController: UIViewController {
     @IBOutlet weak var scoreUI: UILabel!
     @IBOutlet weak var playBtn: UIButton!
 
+    
     @IBAction func playAgain(_ sender: UIButton) {
         game = SetGame(deal: 16, of: 24)
     }
     
+    
+    
     @IBAction func drawCards(_ sender: UIButton) {
-        game.drawThreeCards()
+//        game.drawThreeCards()
 
+        if let card = game.getCard(at: game.tableCount.arc4random ) {
+            cardFace.createFace(for: card)
+        }
+        
     }
-
-
-
     
+    //temp cardface
+    @IBOutlet weak var cardFace: CardFaceView!
     
-    private func drawCardFace(for card: Card, on cardFace: UIView){
 
-    }
 }
 
+extension Int {
+    var arc4random: Int {
+        if self > 0 {
+            return Int( arc4random_uniform( UInt32(self) ))
+        }
+        else if self < 0 {
+            return -Int( arc4random_uniform( UInt32(self) ))
+        }
+        else {
+            return 0
+        }
+    }
+}

@@ -13,21 +13,21 @@ import UIKit
 /**
  Creates a single Set symbol as a UIView, according to its color, shape and shading.
  */
-@IBDesignable
+//@IBDesignable
 class SymbolView: UIView {
     
     private struct sizes {
-        static let strokePercent = 0.04
+        static let strokePercent = 0.02
         static let numStripes = 16
         static let symbolAspectRatio = 1.55
     }
     
-    @IBInspectable
-    var symbol = SymbolType.oval
-    @IBInspectable
-    var shading = Shading.open
-    @IBInspectable
-    var color = UIColor.blue
+    
+    var symbol = SymbolType.squiggle { didSet { setNeedsDisplay() } }
+
+    var shading = Shading.striped { didSet { setNeedsDisplay() } }
+
+    var color = UIColor.blue { didSet { setNeedsDisplay() } }
     
     
     override func draw(_ rect: CGRect) {
@@ -52,7 +52,9 @@ class SymbolView: UIView {
         case .squiggle:
             //add curves to form squiggle shape
             path = UIBezierPath()
-            path.move(to: CGPoint(x: 3 * width / 8, y: offset) )
+            let startPoint = CGPoint(x: 3 * width / 8, y: offset)
+            
+            path.move(to: startPoint )
             path.addCurve(to: CGPoint(x: width / 4, y: height / 6),
                           controlPoint1: CGPoint(x: 3 * width / 8, y: offset),
                           controlPoint2: CGPoint( x: 1 * width / 8, y: 1 * height / 18))
@@ -62,12 +64,16 @@ class SymbolView: UIView {
             path.addCurve(to: CGPoint(x: 5 * width / 8, y: height - offset),
                           controlPoint1: CGPoint(x: 5 * width / 16, y: 16 * height / 16),
                           controlPoint2: CGPoint(x: 10 * width / 16, y: height - offset))
+            
             //append path with mirrored duplicate
             let duplicatePath = UIBezierPath()
+            
             duplicatePath.append(path)
-            duplicatePath.apply(CGAffineTransform(translationX: -rect.origin.x, y: -rect.origin.y))
             duplicatePath.apply(CGAffineTransform(scaleX: -1, y: -1))
-            duplicatePath.apply(CGAffineTransform(translationX: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
+            
+            duplicatePath.apply(CGAffineTransform(translationX: rect.origin.x + path.bounds.maxX + startPoint.x , y: rect.origin.y + path.bounds.maxY + startPoint.y * 0.93))
+            
+            
             path.append(duplicatePath)
             
         case .oval:
@@ -108,11 +114,11 @@ class SymbolView: UIView {
             for _ in 1 ... sizes.numStripes / 2 {
                 linePoint.x = bounds.width + offset
                 stripes.addLine(to: linePoint)
-                linePoint.y += bounds.height / CGFloat(sizes.numStripes)
+                linePoint.y += height / CGFloat(sizes.numStripes)
                 stripes.addLine(to: linePoint)
                 linePoint.x = -offset
                 stripes.addLine(to: linePoint)
-                linePoint.y += bounds.height / CGFloat(sizes.numStripes)
+                linePoint.y += height / CGFloat(sizes.numStripes)
                 stripes.addLine(to: linePoint)
             }
             
