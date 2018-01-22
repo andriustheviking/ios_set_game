@@ -22,7 +22,7 @@ enum Shading {
     case solid, striped, open
 }
 
-enum Color {
+enum Color: Int {
     case A, B, C
 }
 
