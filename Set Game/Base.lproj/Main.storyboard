@@ -61,28 +61,26 @@
                                     <action selector="drawCards:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8VF-21-t6t"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="X0V-43-O6e">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SIl-E5-MXq" customClass="CardFaceView" customModule="Set_Game" customModuleProvider="target">
                                 <rect key="frame" x="16" y="20" width="343" height="534.5"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SIl-E5-MXq" customClass="CardFaceView" customModule="Set_Game" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="534.5"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                            </stackView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="534.5" id="IHl-FU-q6z"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.098412958115183247" green="0.098412958115183247" blue="0.098412958115183247" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vPX-cR-sew" secondAttribute="bottom" constant="20" id="4ai-CS-HPy"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="X0V-43-O6e" secondAttribute="trailing" id="676-s8-6tc"/>
-                            <constraint firstItem="V0O-m8-KFm" firstAttribute="top" secondItem="X0V-43-O6e" secondAttribute="bottom" constant="8" id="AhX-56-ghT"/>
+                            <constraint firstItem="SIl-E5-MXq" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Kh8-8e-xM2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PXT-eX-24l" secondAttribute="trailing" id="Ml3-ew-r7G"/>
                             <constraint firstAttribute="leadingMargin" secondItem="V0O-m8-KFm" secondAttribute="leading" constant="-128" id="OfG-9n-48S"/>
                             <constraint firstAttribute="leadingMargin" secondItem="vPX-cR-sew" secondAttribute="leading" id="T4M-gU-Qax"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="PXT-eX-24l" secondAttribute="bottom" constant="20" id="VBO-cV-kcO"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="X0V-43-O6e" secondAttribute="leading" id="VJq-Nv-fi4"/>
-                            <constraint firstItem="X0V-43-O6e" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="YHR-oe-WfD"/>
+                            <constraint firstItem="V0O-m8-KFm" firstAttribute="top" secondItem="SIl-E5-MXq" secondAttribute="bottom" constant="8" id="dE4-qx-tTf"/>
                             <constraint firstAttribute="bottom" secondItem="V0O-m8-KFm" secondAttribute="bottom" constant="66" id="dFM-fv-4jQ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="SIl-E5-MXq" secondAttribute="trailing" id="gHH-cK-aay"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="SIl-E5-MXq" secondAttribute="leading" id="vj2-HY-yOg"/>
                         </constraints>
                     </view>
                     <connections>

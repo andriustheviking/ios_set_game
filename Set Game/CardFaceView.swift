@@ -18,80 +18,90 @@ class CardFaceView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addStackView(stackView)
+
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        addStackView(stackView)
+
     }
     
 
     
     
     func createFace(for card: Card){
-
-//        
-//        //add cards to stack view
-//        let symbolView = SymbolView()
-//        
-//        symbolView.symbol = card.symbol
-//        symbolView.shading = card.shade
-//        symbolView.color = UIColor(cgColor: symbolColors[card.color.rawValue].cgColor)
-//        
-//        
-//        for _ in 0..<1{
-//         stackView.addSubview(symbolView)
-//        }
         
+        for view in stackView.subviews {
+            view.removeFromSuperview()
+        }
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(stackView)
+        
+        stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        stackView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        stackView.isLayoutMarginsRelativeArrangement = false
 
+        stackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor ).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor ).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor ).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor).isActive = true
+        
+        stackView.distribution = UIStackViewDistribution.fillEqually
+        stackView.alignment = UIStackViewAlignment.center
+        stackView.spacing = 0.0
+        
+        
+        //add symbols
+        for _ in 1...card.number.rawValue {
+            
+            let symbolView = SymbolView()
+            
+            //set symbol properties
+            symbolView.symbol = card.symbol
+            symbolView.shading = card.shade
+            symbolView.color = UIColor(cgColor: symbolColors[card.color.rawValue].cgColor)
+            
+            symbolView.translatesAutoresizingMaskIntoConstraints = false
 
-
-        //update drawing
+//TODO: manually space symbols and add all three.
+            
+//            symbolView.backgroundColor = self.backgroundColor
+            
+            //if view is wider than tall, arrange symbols horizontally, sym.height = self.height, sym.width = self.width/3
+            if self.bounds.maxX > self.bounds.maxY {
+                stackView.axis = UILayoutConstraintAxis.horizontal
+                symbolView.heightAnchor.constraint(equalToConstant: stackView.bounds.height ).isActive = true
+                symbolView.widthAnchor.constraint(equalToConstant: stackView.bounds.width / 3.0 ).isActive = true
+            }
+            else {
+                stackView.axis = UILayoutConstraintAxis.vertical
+                symbolView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
+//                symbolView.heightAnchor.constraint(equalToConstant: stackView.bounds.width ).isActive = true
+                symbolView.widthAnchor.constraint(equalToConstant: stackView.bounds.height / 4.0 ).isActive = true
+            }
+        
+            print("stackview: \(stackView.bounds.width) symbolView: \(symbolView.bounds.width)")
+            
+            stackView.addArrangedSubview(symbolView)
+            
+        }
+        
+        
         stackView.setNeedsDisplay()
         stackView.setNeedsLayout()
         setNeedsDisplay()
         setNeedsLayout()
-        
     }
+    
 }
 
 extension UIView {
     
     func addStackView(_ stackView: UIStackView ){
         
-        stackView.distribution = .fillEqually
-        stackView.alignment = .fill
-        
-        if self.bounds.height > self.bounds.width {
-            stackView.axis = .horizontal
-        } else {
-            stackView.axis = .vertical
-        }
-        
-        self.addSubview(stackView)
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        let viewsDict = ["stackView": stackView]
-        let constraintString = "|-[stackView]-|"
-        
-        let stackView_H = NSLayoutConstraint.constraints(
-            withVisualFormat: "H:" + constraintString,  //horizontal constraint 20 points from left and right side
-            options: NSLayoutFormatOptions(rawValue: 0),
-            metrics: nil,
-            views: viewsDict)
-        let stackView_V = NSLayoutConstraint.constraints(
-            withVisualFormat: "V:" + constraintString, //vertical constraint 30 points from top and bottom
-            options: NSLayoutFormatOptions(rawValue:0),
-            metrics: nil,
-            views: viewsDict)
-        stackView.addConstraints(stackView_H)
-        stackView.addConstraints(stackView_V)
-        
-
-        
-        stackView.backgroundColor = UIColor.yellow
+        // TODO: https://stackoverflow.com/questions/30728062/add-views-in-uistackview-programmatically
         
         print("X: " + String(describing: stackView.frame.maxX), ", Y: " + String(describing: stackView.frame.maxY))
     }

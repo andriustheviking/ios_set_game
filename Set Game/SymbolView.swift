@@ -23,7 +23,7 @@ class SymbolView: UIView {
     }
     
     
-    var symbol = SymbolType.squiggle { didSet { setNeedsDisplay() } }
+    var symbol = SymbolType.diamond { didSet { setNeedsDisplay() } }
 
     var shading = Shading.striped { didSet { setNeedsDisplay() } }
 
@@ -44,9 +44,9 @@ class SymbolView: UIView {
         case .diamond:
             path = UIBezierPath()
             path.move(to: CGPoint(x: width / 2, y: offset))
-            path.addLine(to: CGPoint(x: offset, y: bounds.midY ) )
+            path.addLine(to: CGPoint(x: offset, y: height / 2.0 ) )
             path.addLine(to: CGPoint(x: width / 2, y: height - offset ) )
-            path.addLine(to: CGPoint(x: width - offset, y: bounds.midY ) )
+            path.addLine(to: CGPoint(x: width - offset, y: height / 2.0 ) )
             path.close()
         
         case .squiggle:
