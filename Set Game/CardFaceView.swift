@@ -69,25 +69,19 @@ class CardFaceView: UIView {
             
 //            symbolView.backgroundColor = self.backgroundColor
             
+            stackView.addArrangedSubview(symbolView)
+            
             //if view is wider than tall, arrange symbols horizontally, sym.height = self.height, sym.width = self.width/3
             if self.bounds.maxX > self.bounds.maxY {
                 stackView.axis = UILayoutConstraintAxis.horizontal
                 symbolView.heightAnchor.constraint(equalToConstant: stackView.bounds.height ).isActive = true
-                symbolView.widthAnchor.constraint(equalToConstant: stackView.bounds.width / 3.0 ).isActive = true
             }
             else {
                 stackView.axis = UILayoutConstraintAxis.vertical
-                symbolView.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
-//                symbolView.heightAnchor.constraint(equalToConstant: stackView.bounds.width ).isActive = true
                 symbolView.widthAnchor.constraint(equalToConstant: stackView.bounds.height / 4.0 ).isActive = true
-            }
-        
-            print("stackview: \(stackView.bounds.width) symbolView: \(symbolView.bounds.width)")
-            
-            stackView.addArrangedSubview(symbolView)
-            
+                symbolView.orientation = .horizontal
+            }            
         }
-        
         
         stackView.setNeedsDisplay()
         stackView.setNeedsLayout()

@@ -9,6 +9,7 @@
 
 import UIKit
 
+enum Orientation { case horizontal, vertical }
 
 /**
  Creates a single Set symbol as a UIView, according to its color, shape and shading.
@@ -22,6 +23,8 @@ class SymbolView: UIView {
         static let symbolAspectRatio = 1.55
     }
     
+    
+    var orientation = Orientation.vertical { didSet { setNeedsDisplay() } }
     
     var symbol = SymbolType.diamond { didSet { setNeedsDisplay() } }
 
@@ -81,9 +84,20 @@ class SymbolView: UIView {
                                    size: CGSize(width: width - 2*offset,
                                                 height: height - 2*offset ) )
             path = UIBezierPath(roundedRect: shapeRect, cornerRadius: shapeRect.width )
+
         }
         
+
         
+        switch orientation {
+        case .vertical:             //center in view
+            path.apply(CGAffineTransform(translationX: (bounds.maxX - width) / 2.0, y: (bounds.maxY - height) / 2.0 ))
+        case .horizontal:           //rotate and center in view
+            path.apply(CGAffineTransform(rotationAngle: CGFloat.pi / 2  ) )
+            path.apply(CGAffineTransform(translationX: (height + bounds.maxX) / 2.0, y: (bounds.maxY - width) / 2.0 ))
+        }
+        
+
         switch shading
         {
         case .solid:
@@ -111,7 +125,7 @@ class SymbolView: UIView {
             var linePoint = CGPoint(x: -offset, y: bounds.height / CGFloat(2*sizes.numStripes) )
             stripes.move(to: linePoint )
             
-            for _ in 1 ... sizes.numStripes / 2 {
+            for _ in 1 ... sizes.numStripes {
                 linePoint.x = bounds.width + offset
                 stripes.addLine(to: linePoint)
                 linePoint.y += height / CGFloat(sizes.numStripes)
@@ -125,7 +139,5 @@ class SymbolView: UIView {
             stripes.lineWidth = stroke
             stripes.stroke()
         }
-        
     }
-
 }
