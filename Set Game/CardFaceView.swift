@@ -61,7 +61,7 @@ class CardFaceView: UIView {
             symbolView.shading = card.shade
             symbolView.color = UIColor(cgColor: symbolColors[card.color.rawValue].cgColor)
             
-            symbolView.translatesAutoresizingMaskIntoConstraints = false
+//            symbolView.translatesAutoresizingMaskIntoConstraints = false
 
             symbolView.backgroundColor = self.backgroundColor
             
@@ -74,10 +74,10 @@ class CardFaceView: UIView {
                 symbolView.heightAnchor.constraint(equalToConstant: stackView.bounds.height / 2.0 ).isActive = true
             }
             else {
-                stackView.axis = UILayoutConstraintAxis.vertical
-                symbolView.widthAnchor.constraint(equalToConstant: stackView.bounds.height / 4.0 ).isActive = true
                 symbolView.orientation = .horizontal
-            }            
+                stackView.axis = UILayoutConstraintAxis.vertical
+                symbolView.widthAnchor.constraint(equalToConstant: stackView.bounds.width / 2.0 ).isActive = true
+            }
         }
         
         //redraw
