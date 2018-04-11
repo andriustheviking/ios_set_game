@@ -23,12 +23,9 @@ class CardFaceView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-
     }
     
 
-    
-    
     func createFace(for card: Card){
         
         for view in stackView.subviews {
@@ -39,18 +36,19 @@ class CardFaceView: UIView {
         
         self.addSubview(stackView)
         
-        stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        stackView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        stackView.isLayoutMarginsRelativeArrangement = false
+        //stackview constraints
+            stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+            stackView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            stackView.isLayoutMarginsRelativeArrangement = false
 
-        stackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor ).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor ).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor ).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor).isActive = true
-        
-        stackView.distribution = UIStackViewDistribution.fillEqually
-        stackView.alignment = UIStackViewAlignment.center
-        stackView.spacing = 0.0
+            stackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor ).isActive = true
+            stackView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor ).isActive = true
+            stackView.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor ).isActive = true
+            stackView.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor).isActive = true
+            
+            stackView.distribution = UIStackViewDistribution.fillEqually
+            stackView.alignment = UIStackViewAlignment.center
+            stackView.spacing = 0.0
         
         
         //add symbols
@@ -65,16 +63,15 @@ class CardFaceView: UIView {
             
             symbolView.translatesAutoresizingMaskIntoConstraints = false
 
-//TODO: manually space symbols and add all three.
-            
-//            symbolView.backgroundColor = self.backgroundColor
+            symbolView.backgroundColor = self.backgroundColor
             
             stackView.addArrangedSubview(symbolView)
             
             //if view is wider than tall, arrange symbols horizontally, sym.height = self.height, sym.width = self.width/3
             if self.bounds.maxX > self.bounds.maxY {
                 stackView.axis = UILayoutConstraintAxis.horizontal
-                symbolView.heightAnchor.constraint(equalToConstant: stackView.bounds.height ).isActive = true
+                //make 3 sets same size as 1 by heightAnchor = bounds.height / 2
+                symbolView.heightAnchor.constraint(equalToConstant: stackView.bounds.height / 2.0 ).isActive = true
             }
             else {
                 stackView.axis = UILayoutConstraintAxis.vertical
@@ -83,6 +80,7 @@ class CardFaceView: UIView {
             }            
         }
         
+        //redraw
         stackView.setNeedsDisplay()
         stackView.setNeedsLayout()
         setNeedsDisplay()
