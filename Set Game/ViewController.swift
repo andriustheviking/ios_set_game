@@ -11,11 +11,17 @@ import UIKit
 class ViewController: UIViewController {
     
     var startDeal = 12
+    let numCols = 6
     
     var game = SetGame(deal: 16, of: 24)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.distribution = .fillEqually
+        tableView.alignment = .leading
+        tableView.spacing = 5.0
+        
         updateTableView()
 
     }
@@ -39,11 +45,12 @@ class ViewController: UIViewController {
 
 
     func updateTableView() {
+
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         if let card = game.getCard(at: game.tableCount.arc4random ) {
 
-            tempCard.createFace(for: card)
+            tempCard.createFace(for: card, size: 50.0 )
             
             let cardView = CardFaceView()
             
@@ -51,8 +58,9 @@ class ViewController: UIViewController {
             
             cardView.backgroundColor = UIColor.yellow
             
-            cardView.createFace(for: card)
+            cardView.createFace(for: card, size: 50.0)
         }
+        tableView.setNeedsLayout()
     }
 }
 

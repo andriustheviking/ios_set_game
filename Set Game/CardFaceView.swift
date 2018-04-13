@@ -12,9 +12,8 @@ import UIKit
 class CardFaceView: UIStackView {
     
     private let symbolColors = [#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)]
-
     
-    func createFace(for card: Card){
+    func createFace(for card: Card, size: CGFloat){
         
         for view in subviews {
             view.removeFromSuperview()
@@ -43,13 +42,12 @@ class CardFaceView: UIStackView {
             //if view is wider than tall, arrange symbols horizontally, sym.height = self.height, sym.width = self.width/3
             if self.bounds.maxX > self.bounds.maxY {
                 axis = .horizontal
-                //make 3 sets same size as 1 by heightAnchor = bounds.height / 2
-                symbolView.heightAnchor.constraint(equalToConstant: super.bounds.height / 2.0 ).isActive = true
+                symbolView.heightAnchor.constraint(equalToConstant: size ).isActive = true
             }
             else {
                 axis = .vertical
                 symbolView.orientation = .horizontal
-                symbolView.widthAnchor.constraint(equalToConstant: super.bounds.width / 2.0 ).isActive = true
+                symbolView.widthAnchor.constraint(equalToConstant: size ).isActive = true
             }
         }
 
@@ -57,7 +55,6 @@ class CardFaceView: UIStackView {
         setNeedsDisplay()
         setNeedsLayout()
     }
-    
 }
 
 
