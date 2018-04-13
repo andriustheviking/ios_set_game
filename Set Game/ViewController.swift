@@ -12,40 +12,51 @@ class ViewController: UIViewController {
     
     var startDeal = 12
     
+    var game = SetGame(deal: 16, of: 24)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateTableView()
 
     }
 
-    var game = SetGame(deal: 16, of: 24)
-    
-
-    
     @IBOutlet weak var drawCardButton: UIButton!
     @IBOutlet weak var scoreUI: UILabel!
     @IBOutlet weak var playBtn: UIButton!
+    @IBOutlet weak var tableView: UIStackView!
+    @IBOutlet weak var tempCard: CardFaceView!
+
 
     
     @IBAction func playAgain(_ sender: UIButton) {
         game = SetGame(deal: 16, of: 24)
     }
     
-    
-    
     @IBAction func drawCards(_ sender: UIButton) {
 //        game.drawThreeCards()
-
-        if let card = game.getCard(at: game.tableCount.arc4random ) {
-            cardFace.createFace(for: card)
-        }
-        
+        updateTableView()
     }
-    
-    //temp cardface
-    @IBOutlet weak var cardFace: CardFaceView!
-    
 
+
+    func updateTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if let card = game.getCard(at: game.tableCount.arc4random ) {
+
+            tempCard.createFace(for: card)
+            
+            let cardView = CardFaceView()
+            
+            tableView.addArrangedSubview(cardView)
+            
+            cardView.backgroundColor = UIColor.yellow
+            
+            cardView.createFace(for: card)
+        }
+    }
 }
+
+
 
 extension Int {
     var arc4random: Int {
