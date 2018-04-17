@@ -19,11 +19,9 @@ class CardFaceView: UIStackView {
             view.removeFromSuperview()
         }
         
-        
         //TODO: play around here
-        distribution = .fillProportionally
+        distribution = .fillEqually
         alignment = .center
-        spacing = 0.0
         
         translatesAutoresizingMaskIntoConstraints = false
         

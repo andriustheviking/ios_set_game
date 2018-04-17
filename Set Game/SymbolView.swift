@@ -16,7 +16,6 @@ enum Orientation { case horizontal, vertical }
  */
 //@IBDesignable
 class SymbolView: UIView {
-
     
     private struct sizes {
         static let strokePercent = 0.02
@@ -93,9 +92,8 @@ class SymbolView: UIView {
             case .vertical:             //center in view
                 path.apply(CGAffineTransform(translationX: (bounds.maxX - width) / 2.0, y: (bounds.maxY - height) / 2.0 ))
             case .horizontal:           //rotate and center in view
-                let scale = CGFloat(1.0 / sizes.symbolAspectRatio)
+                let scale =  min(bounds.width / height, CGFloat(sizes.symbolAspectRatio))
                 path.apply(CGAffineTransform(a: 0, b: scale, c: -scale, d: 0, tx: (scale * height + bounds.maxX) / 2.0, ty: ( bounds.maxY - scale * width) / 2.0 ))
-            
         }
         
 
@@ -116,9 +114,9 @@ class SymbolView: UIView {
             case .striped:
                 color.setStroke()
 
+                //create shape outline
                 path.lineWidth = stroke
                 path.stroke()
-                
                 let clipPath = UIBezierPath()
                 clipPath.append(path)
                 clipPath.addClip()
@@ -128,7 +126,7 @@ class SymbolView: UIView {
                 var linePoint = CGPoint(x: -offset, y: bounds.height / CGFloat(2*sizes.numStripes) )
                 stripes.move(to: linePoint )
                 
-                for _ in 1 ... sizes.numStripes {
+                for _ in 1 ... 2*sizes.numStripes {
                     linePoint.x = bounds.width + offset
                     stripes.addLine(to: linePoint)
                     linePoint.y += height / CGFloat(sizes.numStripes)

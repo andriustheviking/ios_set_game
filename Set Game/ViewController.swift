@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     var startDeal = 12
-    let numCols = 5
+    let numCols = 4
     
     var game = SetGame(deal: 1, of: 24)
     
@@ -32,7 +32,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UIStackView!
     
     @IBAction func playAgain(_ sender: UIButton) {
-        game = SetGame(deal: 16, of: 24)
+        game = SetGame(deal: 1, of: 24)
+        updateTableView()
     }
     
     @IBAction func drawCards(_ sender: UIButton) {
@@ -50,35 +51,39 @@ class ViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         var row: UIStackView
-print (game.tableCount)
+
         for i in 0..<game.tableCount {
 
             if let card = game.getCard(at: i) {
 
                 if i % numCols == 0 {
-
-                    row = UIStackView()
-                    row.distribution = .equalSpacing
-//                    row.alignment = .firstBaseline
-                    row.widthAnchor.constraint(equalToConstant: tableView.bounds.width ).isActive = true
+                    row = addTableRow()
                     tableView.addArrangedSubview(row)
                 }
                 else {
                     row = tableView.subviews.last! as! UIStackView
                 }
-                let cardView = CardFaceView()
-                
-                cardView.backgroundColor = .yellow
-                
-                row.addArrangedSubview(cardView)
-                
-                cardView.backgroundColor = UIColor.yellow
-                
-                cardView.createFace(for: card, size: 60.0)
+
+                let cardFace = CardFaceView()
+                row.addArrangedSubview(cardFace)
+                cardFace.createFace(for: card, size: 80.0)
             }
             tableView.setNeedsDisplay()
             tableView.setNeedsLayout()
         }
+    }
+    
+    
+    func addTableRow() -> UIStackView {
+        
+        let row = UIStackView()
+        
+        row.distribution = .fillEqually
+//        row.alignment = .center
+        
+        row.widthAnchor.constraint(equalToConstant: tableView.bounds.width ).isActive = true
+        
+        return row
     }
 }
 
