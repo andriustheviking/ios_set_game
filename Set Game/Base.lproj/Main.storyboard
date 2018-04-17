@@ -36,15 +36,6 @@
                                     <action selector="playAgain:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YiK-yw-UJ4"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V0O-m8-KFm">
-                                <rect key="frame" x="144" y="562" width="118" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="39" id="pbG-Pg-9Gh"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vPX-cR-sew">
                                 <rect key="frame" x="16" y="609" width="144" height="38"/>
                                 <color key="backgroundColor" red="0.60192018191770424" green="1" blue="0.04239010908308527" alpha="1" colorSpace="calibratedRGB"/>
@@ -66,21 +57,28 @@
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="VGP-8K-Vbx">
                                 <rect key="frame" x="16" y="20" width="343" height="535"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="535" id="Bqg-vO-Bh4"/>
-                                </constraints>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V0O-m8-KFm">
+                                <rect key="frame" x="128" y="563" width="118" height="39"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="39" id="pbG-Pg-9Gh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.098412958115183247" green="0.098412958115183247" blue="0.098412958115183247" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vPX-cR-sew" secondAttribute="bottom" constant="20" id="4ai-CS-HPy"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="VGP-8K-Vbx" secondAttribute="leading" id="8pw-0M-EOD"/>
+                            <constraint firstItem="V0O-m8-KFm" firstAttribute="top" secondItem="VGP-8K-Vbx" secondAttribute="bottom" constant="8" id="Hvi-Jk-YVi"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PXT-eX-24l" secondAttribute="trailing" id="Ml3-ew-r7G"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="V0O-m8-KFm" secondAttribute="leading" constant="-128" id="OfG-9n-48S"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="VGP-8K-Vbx" secondAttribute="leading" id="Mw8-Hf-Sz3"/>
                             <constraint firstAttribute="leadingMargin" secondItem="vPX-cR-sew" secondAttribute="leading" id="T4M-gU-Qax"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VGP-8K-Vbx" secondAttribute="trailing" id="Ufd-IE-zNw"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="PXT-eX-24l" secondAttribute="bottom" constant="20" id="VBO-cV-kcO"/>
-                            <constraint firstAttribute="bottom" secondItem="V0O-m8-KFm" secondAttribute="bottom" constant="66" id="dFM-fv-4jQ"/>
+                            <constraint firstItem="V0O-m8-KFm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wv9-xY-emK"/>
+                            <constraint firstAttribute="bottom" secondItem="V0O-m8-KFm" secondAttribute="bottom" constant="65" id="dFM-fv-4jQ"/>
                             <constraint firstItem="VGP-8K-Vbx" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="hBm-Bv-Jd9"/>
                         </constraints>
                     </view>

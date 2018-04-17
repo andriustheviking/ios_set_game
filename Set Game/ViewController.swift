@@ -17,15 +17,12 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.distribution = .fillEqually
         tableView.alignment = .leading
         tableView.spacing = 5.0
-        
         updateTableView()
-
     }
-
+    
     @IBOutlet weak var drawCardButton: UIButton!
     @IBOutlet weak var scoreUI: UILabel!
     @IBOutlet weak var playBtn: UIButton!
@@ -48,8 +45,6 @@ class ViewController: UIViewController {
             view.removeFromSuperview()
         }
         
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
         var row: UIStackView
 
         for i in 0..<game.tableCount {
@@ -66,7 +61,8 @@ class ViewController: UIViewController {
 
                 let cardFace = CardFaceView()
                 row.addArrangedSubview(cardFace)
-                cardFace.createFace(for: card, size: 80.0)
+                let cardSize = tableView.bounds.width / CGFloat( numCols + 1)
+                cardFace.createFace(for: card, size: cardSize)
             }
             tableView.setNeedsDisplay()
             tableView.setNeedsLayout()
