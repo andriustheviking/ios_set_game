@@ -19,7 +19,9 @@ class CardFaceView: UIStackView {
             view.removeFromSuperview()
         }
         
-        distribution = .fillEqually
+        
+        //TODO: play around here
+        distribution = .fillProportionally
         alignment = .center
         spacing = 0.0
         
@@ -35,7 +37,7 @@ class CardFaceView: UIStackView {
             symbolView.shading = card.shade
             symbolView.color = UIColor(cgColor: symbolColors[card.color.rawValue].cgColor)
             
-            symbolView.backgroundColor = self.backgroundColor
+            symbolView.backgroundColor = .white
             
             addArrangedSubview(symbolView)
             

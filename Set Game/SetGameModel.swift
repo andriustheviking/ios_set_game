@@ -40,7 +40,15 @@ class SetGame {
     
     var playerScore: Int { get { return score }    }
     
-    var tableCount: Int { get { return table.count }    }
+    var tableCount: Int {
+        get {
+            for i in 0..<table.count {
+                if table[i] == nil {
+                    return i + 1
+                }
+            }
+            return table.count
+        }   }
     
     var isOver: Bool { get { return deck.isEmpty && table.isEmpty } }
     
@@ -96,18 +104,16 @@ class SetGame {
     
     
     func drawThreeCards() {
-        var numDraws = 0
-        var i = table.startIndex
-
-        while(i < table.endIndex && numDraws < 3) {
-            if table[i] == nil, let card = deck.popLast() {
-                table[i] = (card, false)
-                numDraws += 1
-            }
-            i = table.index(after: i)
+        for _ in 0..<3 {
+            drawCard()
         }
     }
 
+    func drawCard(){
+        if let card = deck.popLast() {
+            table.append( (card, false) )
+        }
+    }
     
     init(deal numCards: Int, of max: Int) {
 
@@ -143,13 +149,8 @@ class SetGame {
         }
         
         //deal cards to table
-        for i in 0..<max {
-            if i < numCards, let card = deck.popLast() {
-                table.append( (card, false) )
-            }
-            else {
-                table.append(nil)
-            }
+        for _ in 0..<numCards {
+            drawCard()
         }
     }
 }
