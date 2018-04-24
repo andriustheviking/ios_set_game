@@ -21,6 +21,9 @@ class ViewController: UIViewController {
         else { return 6 }
     }
     
+    var timer = Timer()
+    var time = 0
+    
     var game = SetGame(deal: 0)
     
     override func viewDidLoad() {
@@ -30,6 +33,13 @@ class ViewController: UIViewController {
         tableView.alignment = .leading
         tableView.spacing = 5.0
         updateUI()
+        //initilize timer
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerAction), userInfo: nil, repeats: true)
+    }
+    
+    func timerAction() {
+        scoreUI.text = String(time)
+        time += 1
     }
     
     @IBOutlet weak var drawCardButton: UIButton!
@@ -39,6 +49,7 @@ class ViewController: UIViewController {
     
     @IBAction func playAgain(_ sender: UIButton) {
         game = SetGame(deal: startDeal)
+        time = 0
         updateUI()
     }
     
@@ -49,11 +60,10 @@ class ViewController: UIViewController {
 
     func updateUI(){
         updateTableView()
-        
     }
 
     func updateTableView() {
-        
+        //clear out tableView
         for view in tableView.subviews {
             view.removeFromSuperview()
         }
@@ -63,7 +73,7 @@ class ViewController: UIViewController {
         for i in 0..<game.tableCount {
 
             if let card = game.getCard(at: i) {
-
+                
                 if i % numCols == 0 {
                     row = addTableRow()
                     tableView.addArrangedSubview(row)
@@ -75,15 +85,15 @@ class ViewController: UIViewController {
                 row.addArrangedSubview(createCardView(card: card, index: i))
 
             }
-            tableView.setNeedsDisplay()
-            tableView.setNeedsLayout()
         }
+        tableView.setNeedsDisplay()
+        tableView.setNeedsLayout()
     }
     
     @objc func tapCard(sender: UITapGestureRecognizer){
         if let cardView = sender.view {
             game.selectCard(index: cardView.tag)
-            updateTableView()
+            updateUI()
         }
     }
     
@@ -114,13 +124,10 @@ class ViewController: UIViewController {
     
     
     func addTableRow() -> UIStackView {
-        
         let row = UIStackView()
-        
         row.distribution = .fillEqually
-        
         row.widthAnchor.constraint(equalToConstant: tableView.bounds.width ).isActive = true
-        
+
         return row
     }
 }

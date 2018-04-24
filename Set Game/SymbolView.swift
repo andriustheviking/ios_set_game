@@ -18,8 +18,8 @@ enum Orientation { case horizontal, vertical }
 class SymbolView: UIView {
     
     private struct sizes {
-        static let strokePercent = 0.02
-        static let numStripes = 16
+        static let strokePercent = 0.03
+        static let numStripes = 10
         static let symbolAspectRatio = 1.55
     }
     

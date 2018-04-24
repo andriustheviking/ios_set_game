@@ -82,6 +82,7 @@ class SetGame {
 
                 //remove cards from table and draw three more
                 if isValid {
+                    score += 1
                     for _ in 0..<3 {
                         for i in table.indices {
                             if table[i]?.selected == true {
@@ -90,12 +91,10 @@ class SetGame {
                             }
                         }
                     }
-                    score += 1
                     drawThreeCards()
                 } else {
                     score -= 1
                 }
-                
                 for i in table.indices {
                         table[i]?.selected = false
                 }
