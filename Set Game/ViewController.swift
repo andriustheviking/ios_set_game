@@ -14,28 +14,34 @@ class ViewController: UIViewController {
     var symbolColors = [#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)]
     let selectColor = UIColor.lightGray
     
+    var timer = Timer()
+    var time = 0
+    var game = SetGame(deal: 0)
+    
     
     var numCols: Int {
         if game.tableCount <= 12 { return 3 }
         else if game.tableCount <= 28 { return 4 }
         else { return 6 }
     }
-    
-    var timer = Timer()
-    var time = 0
-    
-    var game = SetGame(deal: 0)
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         game = SetGame(deal: startDeal)
-        tableView.distribution = .fillEqually
-        tableView.alignment = .leading
-        tableView.spacing = 5.0
         updateUI()
+        
         //initilize timer
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.timerAction), userInfo: nil, repeats: true)
     }
+    
+    
+    override func viewDidLayoutSubviews() {
+        updateUI()
+        
+    }
+    
     
     func timerAction() {
         scoreUI.text = String(time)
@@ -62,6 +68,8 @@ class ViewController: UIViewController {
         updateTableView()
     }
 
+    
+    
     func updateTableView() {
         //clear out tableView
         for view in tableView.subviews {
@@ -69,13 +77,16 @@ class ViewController: UIViewController {
         }
         
         var row: UIStackView
-
+        
+        tableView.axis = tableView.bounds.height > tableView.bounds.width ? .vertical : .horizontal
+        
         for i in 0..<game.tableCount {
 
             if let card = game.getCard(at: i) {
                 
                 if i % numCols == 0 {
                     row = addTableRow()
+                    
                     tableView.addArrangedSubview(row)
                 }
                 else {
@@ -104,13 +115,26 @@ class ViewController: UIViewController {
         cardFace.colors = symbolColors
         cardFace.tag = index
         
-        //add gesture
+        //add tap gesture
         let cardTap = UITapGestureRecognizer(target: self, action: #selector(self.tapCard(sender:)))
         cardFace.addGestureRecognizer(cardTap)
         
-        //set cardsize
-        let cardSize = tableView.bounds.width  / CGFloat( numCols) - 5
-        cardFace.createFace(for: card, size: cardSize)
+        //calc orientation
+        let orientation: Orientation = tableView.bounds.height > tableView.bounds.width ? .vertical : .horizontal
+        
+        //calc cardsize
+        var cardSize: CGFloat
+
+        if orientation == .vertical {
+            cardSize = tableView.bounds.width  / CGFloat( numCols) - 5
+        }
+        else {
+            //int division rounded up to find rows
+            cardSize = tableView.bounds.height  / CGFloat( numCols) - 5
+        }
+        
+        //create cardface
+        cardFace.createFace(for: card, size: cardSize, orientation: orientation)
         
         //color selected card
         if game.cardIsSelected(at: index) {
@@ -118,7 +142,6 @@ class ViewController: UIViewController {
                 view.backgroundColor = selectColor
             }
         }
-        
         return cardFace
     }
     
@@ -126,7 +149,18 @@ class ViewController: UIViewController {
     func addTableRow() -> UIStackView {
         let row = UIStackView()
         row.distribution = .fillEqually
-        row.widthAnchor.constraint(equalToConstant: tableView.bounds.width ).isActive = true
+        
+        if tableView.bounds.height > tableView.bounds.width{
+            row.axis =  .horizontal
+            row.widthAnchor.constraint(equalToConstant: tableView.bounds.width ).isActive = true
+        }
+        else {
+            row.axis = .vertical
+            row.heightAnchor.constraint(equalToConstant: tableView.bounds.height ).isActive = true
+        }
+        
+    
+        
 
         return row
     }
