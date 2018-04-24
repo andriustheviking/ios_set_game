@@ -56,7 +56,7 @@ class SetGame {
         return index < table.count ? table[index]?.card : nil
     }
     
-    func isSelected(at index: Int) -> Bool {
+    func cardIsSelected(at index: Int) -> Bool {
         if let position = table[index] {
             return position.selected
         }
@@ -71,7 +71,7 @@ class SetGame {
             table[index]?.selected = !space.selected
             
             let cards = table.filter({ $0?.selected ?? false}).map({$0!.card})
-
+            
             if cards.count == 3 {
                 
                 //check if valid set
@@ -82,10 +82,11 @@ class SetGame {
 
                 //remove cards from table and draw three more
                 if isValid {
-                    for i in table.indices {
-                        if let space = table[i] {
-                            if space.selected {
-                                table[i] = nil
+                    for _ in 0..<3 {
+                        for i in table.indices {
+                            if table[i]?.selected == true {
+                                table.remove(at: i)
+                                break
                             }
                         }
                     }
@@ -115,7 +116,7 @@ class SetGame {
         }
     }
     
-    init(deal numCards: Int, of max: Int) {
+    init(deal numCards: Int) {
 
         //initialize deck
         let cardNumbers = [Number.one, Number.two, Number.three]

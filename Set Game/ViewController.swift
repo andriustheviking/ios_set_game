@@ -10,17 +10,26 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var startDeal = 12
-    let numCols = 4
+    var startDeal = 24
+    var symbolColors = [#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)]
+    let selectColor = UIColor.lightGray
     
-    var game = SetGame(deal: 1, of: 24)
+    
+    var numCols: Int {
+        if game.tableCount <= 12 { return 3 }
+        else if game.tableCount <= 28 { return 4 }
+        else { return 6 }
+    }
+    
+    var game = SetGame(deal: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        game = SetGame(deal: startDeal)
         tableView.distribution = .fillEqually
         tableView.alignment = .leading
         tableView.spacing = 5.0
-        updateTableView()
+        updateUI()
     }
     
     @IBOutlet weak var drawCardButton: UIButton!
@@ -29,15 +38,19 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UIStackView!
     
     @IBAction func playAgain(_ sender: UIButton) {
-        game = SetGame(deal: 1, of: 24)
-        updateTableView()
+        game = SetGame(deal: startDeal)
+        updateUI()
     }
     
     @IBAction func drawCards(_ sender: UIButton) {
-        game.drawCard()
-        updateTableView()
+        game.drawThreeCards()
+        updateUI()
     }
 
+    func updateUI(){
+        updateTableView()
+        
+    }
 
     func updateTableView() {
         
@@ -58,15 +71,45 @@ class ViewController: UIViewController {
                 else {
                     row = tableView.subviews.last! as! UIStackView
                 }
+                
+                row.addArrangedSubview(createCardView(card: card, index: i))
 
-                let cardFace = CardFaceView()
-                row.addArrangedSubview(cardFace)
-                let cardSize = tableView.bounds.width / CGFloat( numCols + 1)
-                cardFace.createFace(for: card, size: cardSize)
             }
             tableView.setNeedsDisplay()
             tableView.setNeedsLayout()
         }
+    }
+    
+    @objc func tapCard(sender: UITapGestureRecognizer){
+        if let cardView = sender.view {
+            game.selectCard(index: cardView.tag)
+            updateTableView()
+        }
+    }
+    
+    
+    func createCardView(card: Card, index: Int) -> UIView {
+
+        let cardFace = CardFaceView()
+        cardFace.colors = symbolColors
+        cardFace.tag = index
+        
+        //add gesture
+        let cardTap = UITapGestureRecognizer(target: self, action: #selector(self.tapCard(sender:)))
+        cardFace.addGestureRecognizer(cardTap)
+        
+        //set cardsize
+        let cardSize = tableView.bounds.width  / CGFloat( numCols) - 5
+        cardFace.createFace(for: card, size: cardSize)
+        
+        //color selected card
+        if game.cardIsSelected(at: index) {
+            for view in cardFace.subviews {
+                view.backgroundColor = selectColor
+            }
+        }
+        
+        return cardFace
     }
     
     
@@ -75,14 +118,12 @@ class ViewController: UIViewController {
         let row = UIStackView()
         
         row.distribution = .fillEqually
-//        row.alignment = .center
         
         row.widthAnchor.constraint(equalToConstant: tableView.bounds.width ).isActive = true
         
         return row
     }
 }
-
 
 
 extension Int {
