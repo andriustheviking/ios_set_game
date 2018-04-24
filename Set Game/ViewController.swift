@@ -10,128 +10,132 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let gameSymbols = "▲●■"
-    let gameColors = [#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)]
+    var startDeal = 24
+    var symbolColors = [#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)]
+    let selectColor = UIColor.lightGray
     
-    var startDeal = 12
+    
+    var numCols: Int {
+        if game.tableCount <= 12 { return 3 }
+        else if game.tableCount <= 28 { return 4 }
+        else { return 6 }
+    }
+    
+    var game = SetGame(deal: 0)
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        game = SetGame(deal: startDeal)
+        tableView.distribution = .fillEqually
+        tableView.alignment = .leading
+        tableView.spacing = 5.0
         updateUI()
     }
-
-    var game = SetGame(deal: 16, of: 24) {
-        didSet{
-            updateUI()
-        }
-    }
-    
-    
-    @IBOutlet var buttons: [UIButton]!
     
     @IBOutlet weak var drawCardButton: UIButton!
     @IBOutlet weak var scoreUI: UILabel!
     @IBOutlet weak var playBtn: UIButton!
+    @IBOutlet weak var tableView: UIStackView!
     
     @IBAction func playAgain(_ sender: UIButton) {
-        game = SetGame(deal: 16, of: buttons.count)
+        game = SetGame(deal: startDeal)
+        updateUI()
     }
     
     @IBAction func drawCards(_ sender: UIButton) {
         game.drawThreeCards()
         updateUI()
     }
-    
-  
-    @IBAction func touchCard(_ sender: UIButton) {
-        game.selectCard(index: buttons.index(of: sender)!)
-        updateUI()
+
+    func updateUI(){
+        updateTableView()
+        
     }
 
-    
-    func updateUI() {
+    func updateTableView() {
         
-        var enableDrawCard = false
+        for view in tableView.subviews {
+            view.removeFromSuperview()
+        }
         
-        for i in buttons.indices {
-            
-            let button = buttons[i]
-            
-            //draw empty button
-            button.layer.cornerRadius = 8.0
-            button.layer.borderWidth = 0.0
-            button.backgroundColor = nil
-            button.setAttributedTitle(nil, for: UIControlState.normal)
-            
+        var row: UIStackView
+
+        for i in 0..<game.tableCount {
+
             if let card = game.getCard(at: i) {
-                
-                drawCardFace(for: card, on: button)
-                
-                if game.isSelected(at: i) {
-                    buttons[i].layer.borderWidth = 3.0
-                    buttons[i].layer.borderColor = UIColor.blue.cgColor
+
+                if i % numCols == 0 {
+                    row = addTableRow()
+                    tableView.addArrangedSubview(row)
+                }
+                else {
+                    row = tableView.subviews.last! as! UIStackView
                 }
                 
-            } else {
-                enableDrawCard = true
+                row.addArrangedSubview(createCardView(card: card, index: i))
+
+            }
+            tableView.setNeedsDisplay()
+            tableView.setNeedsLayout()
+        }
+    }
+    
+    @objc func tapCard(sender: UITapGestureRecognizer){
+        if let cardView = sender.view {
+            game.selectCard(index: cardView.tag)
+            updateTableView()
+        }
+    }
+    
+    
+    func createCardView(card: Card, index: Int) -> UIView {
+
+        let cardFace = CardFaceView()
+        cardFace.colors = symbolColors
+        cardFace.tag = index
+        
+        //add gesture
+        let cardTap = UITapGestureRecognizer(target: self, action: #selector(self.tapCard(sender:)))
+        cardFace.addGestureRecognizer(cardTap)
+        
+        //set cardsize
+        let cardSize = tableView.bounds.width  / CGFloat( numCols) - 5
+        cardFace.createFace(for: card, size: cardSize)
+        
+        //color selected card
+        if game.cardIsSelected(at: index) {
+            for view in cardFace.subviews {
+                view.backgroundColor = selectColor
             }
         }
         
-        drawCardButton.isEnabled = enableDrawCard
-        scoreUI.text = "Score: " + String(game.playerScore)
+        return cardFace
     }
     
     
-    private func drawCardFace(for card: Card, on button: UIButton){
+    func addTableRow() -> UIStackView {
         
-        var cardFaceString = String()
+        let row = UIStackView()
         
-        var symbolIndex = gameSymbols.startIndex
+        row.distribution = .fillEqually
         
-        //get the specific symbol of the face card
-        switch card.symbol{
-            case .A:
-                break
-            case .B:
-                symbolIndex = gameSymbols.index(after: symbolIndex)
-            case .C:
-                symbolIndex = gameSymbols.index(symbolIndex, offsetBy: 2)
-        }
+        row.widthAnchor.constraint(equalToConstant: tableView.bounds.width ).isActive = true
         
-        //add number of symbols to cardString
-        for _ in 0 ..< card.number.rawValue {
-            cardFaceString.append( gameSymbols[symbolIndex] )
-            cardFaceString.append(" ")
-        }
-
-        //set color
-        let cardColor = UIColor(cgColor: gameColors[card.color.rawValue].cgColor)
-        
-        //set shade and outline if necessary
-        var strokeWidth = NSNumber(value: 0.0)
-        var fontAlpha = CGFloat(1.0)
-        
-        switch card.shade {
-            case .solid:
-                break
-            case .striped:
-                fontAlpha = 0.40
-            case .open:
-                fontAlpha = 0.0
-                strokeWidth = NSNumber(floatLiteral: 6.0)
-        }
-        
-        let attributes = [
-            NSForegroundColorAttributeName : cardColor.withAlphaComponent(fontAlpha),
-            NSStrokeColorAttributeName : cardColor,
-            NSStrokeWidthAttributeName : strokeWidth
-        ] as [String : Any]
-        
-        let cardFace = NSAttributedString(string: cardFaceString, attributes: attributes)
-        
-        button.setAttributedTitle(cardFace, for: UIControlState.normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
-        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-
+        return row
     }
 }
 
+
+extension Int {
+    var arc4random: Int {
+        if self > 0 {
+            return Int( arc4random_uniform( UInt32(self) ))
+        }
+        else if self < 0 {
+            return -Int( arc4random_uniform( UInt32(self) ))
+        }
+        else {
+            return 0
+        }
+    }
+}

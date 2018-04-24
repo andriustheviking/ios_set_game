@@ -15,7 +15,7 @@ enum Number: Int {
 }
 
 enum SymbolType {
-    case A, B, C
+    case diamond, oval, squiggle
 }
 
 enum Shading {
@@ -23,7 +23,9 @@ enum Shading {
 }
 
 enum Color: Int {
-    case A, B, C
+    case A = 0
+    case B
+    case C
 }
 
 struct Card {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		092CB6C120005D49008C04E1 /* CardFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092CB6C020005D49008C04E1 /* CardFaceView.swift */; };
 		094BD4E11FE9B174005A6C7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BD4E01FE9B174005A6C7E /* AppDelegate.swift */; };
 		094BD4E31FE9B174005A6C7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BD4E21FE9B174005A6C7E /* ViewController.swift */; };
 		094BD4E61FE9B174005A6C7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 094BD4E41FE9B174005A6C7E /* Main.storyboard */; };
@@ -14,9 +15,11 @@
 		094BD4EB1FE9B174005A6C7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 094BD4E91FE9B174005A6C7E /* LaunchScreen.storyboard */; };
 		094BD4F31FE9B641005A6C7E /* SetGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BD4F21FE9B641005A6C7E /* SetGameModel.swift */; };
 		094BD4F51FE9B6E0005A6C7E /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094BD4F41FE9B6E0005A6C7E /* Card.swift */; };
+		09598683200D6E10001931CC /* SymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09598682200D6E10001931CC /* SymbolView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		092CB6C020005D49008C04E1 /* CardFaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardFaceView.swift; sourceTree = "<group>"; };
 		094BD4DD1FE9B174005A6C7E /* Set Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Set Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		094BD4E01FE9B174005A6C7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		094BD4E21FE9B174005A6C7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,6 +29,7 @@
 		094BD4EC1FE9B174005A6C7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		094BD4F21FE9B641005A6C7E /* SetGameModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetGameModel.swift; sourceTree = "<group>"; };
 		094BD4F41FE9B6E0005A6C7E /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		09598682200D6E10001931CC /* SymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,7 @@
 		094BD4DF1FE9B174005A6C7E /* Set Game */ = {
 			isa = PBXGroup;
 			children = (
+				092CB6C020005D49008C04E1 /* CardFaceView.swift */,
 				094BD4F21FE9B641005A6C7E /* SetGameModel.swift */,
 				094BD4F41FE9B6E0005A6C7E /* Card.swift */,
 				094BD4E01FE9B174005A6C7E /* AppDelegate.swift */,
@@ -66,6 +71,7 @@
 				094BD4E71FE9B174005A6C7E /* Assets.xcassets */,
 				094BD4E91FE9B174005A6C7E /* LaunchScreen.storyboard */,
 				094BD4EC1FE9B174005A6C7E /* Info.plist */,
+				09598682200D6E10001931CC /* SymbolView.swift */,
 			);
 			path = "Set Game";
 			sourceTree = "<group>";
@@ -143,6 +149,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09598683200D6E10001931CC /* SymbolView.swift in Sources */,
+				092CB6C120005D49008C04E1 /* CardFaceView.swift in Sources */,
 				094BD4E31FE9B174005A6C7E /* ViewController.swift in Sources */,
 				094BD4E11FE9B174005A6C7E /* AppDelegate.swift in Sources */,
 				094BD4F31FE9B641005A6C7E /* SetGameModel.swift in Sources */,
@@ -310,6 +318,7 @@
 				094BD4F11FE9B174005A6C7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

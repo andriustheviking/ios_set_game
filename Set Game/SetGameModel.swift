@@ -40,7 +40,15 @@ class SetGame {
     
     var playerScore: Int { get { return score }    }
     
-    var tableCount: Int { get { return table.count }    }
+    var tableCount: Int {
+        get {
+            for i in 0..<table.count {
+                if table[i] == nil {
+                    return i + 1
+                }
+            }
+            return table.count
+        }   }
     
     var isOver: Bool { get { return deck.isEmpty && table.isEmpty } }
     
@@ -48,7 +56,7 @@ class SetGame {
         return index < table.count ? table[index]?.card : nil
     }
     
-    func isSelected(at index: Int) -> Bool {
+    func cardIsSelected(at index: Int) -> Bool {
         if let position = table[index] {
             return position.selected
         }
@@ -63,7 +71,7 @@ class SetGame {
             table[index]?.selected = !space.selected
             
             let cards = table.filter({ $0?.selected ?? false}).map({$0!.card})
-
+            
             if cards.count == 3 {
                 
                 //check if valid set
@@ -74,10 +82,11 @@ class SetGame {
 
                 //remove cards from table and draw three more
                 if isValid {
-                    for i in table.indices {
-                        if let space = table[i] {
-                            if space.selected {
-                                table[i] = nil
+                    for _ in 0..<3 {
+                        for i in table.indices {
+                            if table[i]?.selected == true {
+                                table.remove(at: i)
+                                break
                             }
                         }
                     }
@@ -96,24 +105,22 @@ class SetGame {
     
     
     func drawThreeCards() {
-        var numDraws = 0
-        var i = table.startIndex
-
-        while(i < table.endIndex && numDraws < 3) {
-            if table[i] == nil, let card = deck.popLast() {
-                table[i] = (card, false)
-                numDraws += 1
-            }
-            i = table.index(after: i)
+        for _ in 0..<3 {
+            drawCard()
         }
     }
 
+    func drawCard(){
+        if let card = deck.popLast() {
+            table.append( (card, false) )
+        }
+    }
     
-    init(deal numCards: Int, of max: Int) {
+    init(deal numCards: Int) {
 
         //initialize deck
         let cardNumbers = [Number.one, Number.two, Number.three]
-        let cardSymbols = [SymbolType.A, SymbolType.B, SymbolType.C]
+        let cardSymbols = [SymbolType.diamond , SymbolType.oval, SymbolType.squiggle]
         let cardShades = [Shading.solid, Shading.open, Shading.striped]
         let cardColor = [Color.A, Color.B, Color.C]
         
@@ -143,13 +150,8 @@ class SetGame {
         }
         
         //deal cards to table
-        for i in 0..<max {
-            if i < numCards, let card = deck.popLast() {
-                table.append( (card, false) )
-            }
-            else {
-                table.append(nil)
-            }
+        for _ in 0..<numCards {
+            drawCard()
         }
     }
 }
